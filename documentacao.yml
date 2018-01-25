@@ -1,0 +1,196 @@
+https://ws.pagseguro.uol.com.br/v3/transactions/0848EC93-359C-41BA-9933-7A46C4E492E6?email=projetos@ailog.com.br&token=93D6EB47FFF24853A58E8DE398D2A8EA&correlationId=0525f17c-3b89-4a54-b9ee-662ceec601b7openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Agendamento de pacientes'
+  description: 'Documentação da API de agendamento de pacientes'
+paths:
+  /agendamentos:
+    get:
+      tags:
+        - 'private'
+      summary: 'Retorna os agendamentos de acordo com os filtros'
+      operationId: getAgendamento
+      description: ''
+      parameters: 
+        - in: query
+          name: page
+          description: 'Número da página da consulta'
+          schema:
+            type: number
+        - in: query
+          name: pagesize
+          description: 'Tamanho da página da consulta'
+          schema:
+            type: number
+        - in: query
+          name: page
+          description: 'Número da página da consulta'
+          schema:
+            type: number
+        - in: query
+          name: page
+          description: 'Número da página da consulta'
+          schema:
+            type: number
+        - in: query
+          name: sortId
+          schema:
+            type: string
+        - in: query
+          name: sortDirection
+          schema:
+            type: string
+            enum: 
+            - ''
+            - 'asc'
+            - 'desc'
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
+        '403':
+          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
+        '500':
+          description: 'Erro interno no servidor'
+    post:
+      tags:
+        - 'private'
+      summary: 'Cadastra um agendamento no sistema'
+      operationId: criaAgendamento
+      description: ''
+      responses:
+        '201':
+          description: ''
+        '400':
+          description: ''
+        '409':
+          description: ''
+        '500':
+          description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Atendimento'
+        description: Atendimento que será registrado
+  /agendamentos/{id}:
+    get:
+      tags:
+        - 'private'
+      summary: 'Retorna o agendamento com esse id no sistema'
+      operationId: getAgendamento
+      description: ''
+      parameters: 
+        - in: path
+          name: id
+          description: 'ID do atendimento'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
+        '403':
+          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
+        '500':
+          description: 'Erro interno no servidor'
+    put:
+      tags:
+        - 'private'
+      summary: 'Atualiza o agendamento com esse id no sistema'
+      operationId: getAgendamento
+      description: ''
+      parameters: 
+        - in: path
+          name: id
+          description: 'ID do atendimento'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
+        '403':
+          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
+        '500':
+          description: 'Erro interno no servidor'
+    delete:
+      tags:
+        - 'private'
+      summary: 'Remove o agendamento com esse id no sistema'
+      operationId: getAgendamento
+      description: ''
+      parameters: 
+        - in: path
+          name: id
+          description: 'ID do atendimento'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '400':
+          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
+        '403':
+          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
+        '500':
+          description: 'Erro interno no servidor'
+components:
+  schemas:
+    Atendimento:
+      type: object
+      required:
+        - data_hora_inicio
+        - data_hora_fim
+        - paciente
+        - procedimento
+      properties:
+        data_hora_inicio:
+          type: string
+          format: date-time
+        data_hora_fim:
+          type: string
+          format: date-time
+        paciente:
+          type: string
+          example: 'Tomas Labella Menito'
+        procedimento:
+          type: string
+          example: 'Atendimento simples'
+    PagedResponse:
+      type: object
+      properties:
+        content:
+          type: array
+        pageable:
+          type: object
+        totalPages:
+          type: integer  
+        totalElements:
+          type: integer  
+        last:
+          type: boolean  
+        size:
+          type: integer  
+        number:
+          type: integer
+        sort:
+          type: object
+          properties:
+            unsorted:
+              type: boolean
+            sorted:
+              type: boolean
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+servers:
+  - description: 'default'
+    url:  /api/
