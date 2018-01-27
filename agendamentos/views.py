@@ -12,25 +12,35 @@ def get_delete_update_agendamento(request, pk):
     except Agendamento.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # get details of a single puppy
     if request.method == 'GET':
         serializer = AgendamentoSerializer(agendamento)
         return Response(serializer.data)
-    # delete a single puppy
     elif request.method == 'DELETE':
-        return Response({})
-    # update details of a single puppy
+        agendamento.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == 'PUT':
-        return Response({})
+        serializer = AgendamentoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST'])
 def get_post_agendamentos(request):
-    # get all puppies
     if request.method == 'GET':
         agendamentos = Agendamento.objects.all()
         serializer = AgendamentoSerializer(agendamentos, many=True)
         return Response(serializer.data)
-    # insert a new record for a puppy
     elif request.method == 'POST':
-        return Response({})
+        data = {
+            'data_inicio': request.data.get('data_inicio'),
+            'data_fim': request.data.get('data_fim'),
+            'paciente': request.data.get('paciente'),
+            'procedimento': request.data.get('procedimento'),
+        }
+        serializer = AgendamentoSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
