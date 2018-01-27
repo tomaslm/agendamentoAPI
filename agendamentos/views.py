@@ -29,6 +29,8 @@ def get_delete_update_agendamento(request, pk):
 @api_view(['GET', 'POST'])
 def get_post_agendamentos(request):
     if request.method == 'GET':
+        # verificar paginacao
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         agendamentos = Agendamento.objects.all()
         serializer = AgendamentoSerializer(agendamentos, many=True)
         return Response(serializer.data)
@@ -44,3 +46,4 @@ def get_post_agendamentos(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(serializer.errors, status=status.HTTP_409_CONFLICT)

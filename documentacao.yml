@@ -1,4 +1,4 @@
-https://ws.pagseguro.uol.com.br/v3/transactions/0848EC93-359C-41BA-9933-7A46C4E492E6?email=projetos@ailog.com.br&token=93D6EB47FFF24853A58E8DE398D2A8EA&correlationId=0525f17c-3b89-4a54-b9ee-662ceec601b7openapi: 3.0.0
+openapi: 3.0.0
 info:
   version: '1.0.0'
   title: 'Agendamento de pacientes'
@@ -6,8 +6,6 @@ info:
 paths:
   /agendamentos:
     get:
-      tags:
-        - 'private'
       summary: 'Retorna os agendamentos de acordo com os filtros'
       operationId: getAgendamento
       description: ''
@@ -46,28 +44,20 @@ paths:
             - 'desc'
       responses:
         '200':
-          description: ''
+          description: 'Sucesso'
         '400':
           description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
-        '403':
-          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
-        '500':
-          description: 'Erro interno no servidor'
     post:
-      tags:
-        - 'private'
       summary: 'Cadastra um agendamento no sistema'
       operationId: criaAgendamento
       description: ''
       responses:
         '201':
-          description: ''
+          description: 'Agendamento criado com sucesso'
         '400':
-          description: ''
+          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
         '409':
-          description: ''
-        '500':
-          description: ''
+          description: 'Existe um conflito de horários com esse paciente'
       requestBody:
         content:
           application/json:
@@ -76,8 +66,6 @@ paths:
         description: Atendimento que será registrado
   /agendamentos/{id}:
     get:
-      tags:
-        - 'private'
       summary: 'Retorna o agendamento com esse id no sistema'
       operationId: getAgendamento
       description: ''
@@ -90,16 +78,10 @@ paths:
             type: string
       responses:
         '200':
-          description: ''
-        '400':
-          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
-        '403':
-          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
-        '500':
-          description: 'Erro interno no servidor'
+          description: 'Sucesso'
+        '404':
+          description: 'Não foi possível encontrar o agendamento no sistema'
     put:
-      tags:
-        - 'private'
       summary: 'Atualiza o agendamento com esse id no sistema'
       operationId: getAgendamento
       description: ''
@@ -111,17 +93,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        '204':
+          description: 'Agendamento alterado com sucesso'
         '400':
           description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
-        '403':
-          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
-        '500':
-          description: 'Erro interno no servidor'
+        '404':
+          description: 'Não foi possível encontrar o agendamento no sistema'
     delete:
-      tags:
-        - 'private'
       summary: 'Remove o agendamento com esse id no sistema'
       operationId: getAgendamento
       description: ''
@@ -133,14 +111,10 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
-        '400':
-          description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
-        '403':
-          description: 'Usuário não encontrado no sistema ou a senha está incorreta'
-        '500':
-          description: 'Erro interno no servidor'
+        '204':
+          description: 'Agendamento apagado com sucesso'
+        '404':
+          description: 'Não foi possível encontrar o agendamento no sistema'
 components:
   schemas:
     Atendimento:
