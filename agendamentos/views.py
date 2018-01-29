@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Agendamento
 from .serializers import AgendamentoSerializer
+from rest_framework.settings import api_settings
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
@@ -29,11 +30,25 @@ def get_delete_update_agendamento(request, pk):
 @api_view(['GET', 'POST'])
 def get_post_agendamentos(request):
     if request.method == 'GET':
-        # verificar paginacao
         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        agendamentos = Agendamento.objects.all()
-        serializer = AgendamentoSerializer(agendamentos, many=True)
-        return Response(serializer.data)
+        paginator_class = api_settings.DEFAULT_PAGINATION_CLASS
+        paginator = paginator_class()
+
+        queryset = Agendamento.objects.all()
+        query_filtro_global = request.GET.get('q')
+        if query_filtro_global:
+            queryset = queryset.filter(paciente__icontains=query_filtro_global)
+
+        sort = request.GET.get('sort')
+        if sort:
+            #sortDirection = request.GET.get('sortDirection')
+            queryset = queryset.order_by(sort)
+
+        page = paginator.paginate_queryset(queryset, request)
+
+        serializer = AgendamentoSerializer(page, many=True)
+
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         data = {
             'data_inicio': request.data.get('data_inicio'),
