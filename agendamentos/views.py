@@ -57,8 +57,9 @@ def get_post_agendamentos(request):
         return paginator.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         data = {
-            'data_inicio': request.data.get('data_inicio'),
-            'data_fim': request.data.get('data_fim'),
+            'data': request.data.get('data'),
+            'hora_inicio': request.data.get('hora_inicio'),
+            'hora_fim': request.data.get('hora_fim'),
             'paciente': request.data.get('paciente'),
             'procedimento': request.data.get('procedimento'),
         }

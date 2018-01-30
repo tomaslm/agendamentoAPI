@@ -3,8 +3,9 @@ from django.core.validators import ValidationError
 
 
 class Agendamento(models.Model):
-    data_inicio = models.DateTimeField()
-    data_fim = models.DateTimeField()
+    data = models.DateField()
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
     paciente = models.CharField(max_length=200)
     procedimento = models.CharField(max_length=200)
 
