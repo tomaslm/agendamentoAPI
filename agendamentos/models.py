@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import ValidationError
 
 
 class Agendamento(models.Model):
@@ -8,7 +9,4 @@ class Agendamento(models.Model):
     procedimento = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.data_inicio + ', ' + self.data_fim + ', ' + self.paciente + ', ' + self.procedimento
-
-    def is_valid(self):
-        return data_fim-data_inicio > 0
+        return str(self.data_inicio) + ', ' + str(self.data_fim) + ', ' + self.paciente + ', ' + self.procedimento
