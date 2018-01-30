@@ -10,4 +10,4 @@ class Agendamento(models.Model):
     procedimento = models.CharField(max_length=200)
 
     def __str__(self):
-        return str(self.data_inicio) + ', ' + str(self.data_fim) + ', ' + self.paciente + ', ' + self.procedimento
+        return str(self.data) + ', ' + str(self.hora_inicio) + ', ' + str(self.hora_fim) + ', ' + self.paciente + ', ' + self.procedimento

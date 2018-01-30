@@ -26,7 +26,7 @@ def get_delete_update_agendamento(request, pk):
         if serializer.is_valid():
             try:
                 serializer.validate_agendamento_com_mesmo_horario(
-                    vars(agendamento), pk)
+                    request.data, pk)
             except serializers.ValidationError as ex:
                 return Response(str(ex), status=status.HTTP_409_CONFLICT)
             serializer.save()
