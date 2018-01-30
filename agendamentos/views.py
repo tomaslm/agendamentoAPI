@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .models import Agendamento
 from .serializers import AgendamentoSerializer
 from rest_framework.settings import api_settings
+from django.db.models import Q
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
@@ -44,7 +45,8 @@ def get_post_agendamentos(request):
         queryset = Agendamento.objects.all()
         query_filtro_global = request.GET.get('q')
         if query_filtro_global:
-            queryset = queryset.filter(paciente__icontains=query_filtro_global)
+            queryset = queryset.filter(
+                Q(paciente__icontains=query_filtro_global) | Q(procedimento__icontains=query_filtro_global))
 
         sort = request.GET.get('sort')
         if sort:
