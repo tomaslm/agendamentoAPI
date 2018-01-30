@@ -13,22 +13,26 @@ class BuscaTodosAgendamentosTest(TestCase):
     def setUp(self):
         self.joana = Agendamento.objects.create(
             paciente='Joana', procedimento='Cirurgia',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.maria = Agendamento.objects.create(
             paciente='Maria', procedimento='Atendimento',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.jose = Agendamento.objects.create(
             paciente='Jose', procedimento='Availiação',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.marcio = Agendamento.objects.create(
             paciente='Marcio', procedimento='Retorno',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
 
     def test_get_all_atendimentos(self):
         response = client.get(reverse('get_post_agendamentos'))
         agendamentos = Agendamento.objects.all()
         serializer = AgendamentoSerializer(agendamentos, many=True)
-        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.data['results'], serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
@@ -36,16 +40,20 @@ class BuscaUmAgendamentoTest(TestCase):
     def setUp(self):
         self.joana = Agendamento.objects.create(
             paciente='Joana', procedimento='Cirurgia',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.maria = Agendamento.objects.create(
             paciente='Maria', procedimento='Atendimento',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.jose = Agendamento.objects.create(
             paciente='Jose', procedimento='Availiação',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.marcio = Agendamento.objects.create(
             paciente='Marcio', procedimento='Retorno',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
 
     def test_get_atendimento_com_id_invalido(self):
         response = client.get(
@@ -63,15 +71,17 @@ class BuscaUmAgendamentoTest(TestCase):
 class CriaAgendamentoTest(TestCase):
     def setUp(self):
         self.payload_valido = {
-            'data_inicio': '2018-01-09T09:00:00.000',
-            'data_fim': '2018-01-09T09:50:00.000',
+            'data': '2018-01-09',
+            'hora_inicio': '09:00:00.000',
+            'hora_fim': '09:50:00.000',
             'paciente': 'Jose',
             'procedimento': 'Cirurgia'
         }
 
         self.payload_invalido = {
-            'data_inicio': '2018-01-09T09:00:00.000',
-            'data_fim': '2018-01-09T09:50:00.000',
+            'data': '2018-01-09',
+            'hora_inicio': '09:00:00.000',
+            'hora_fim': '09:50:00.000',
             'paciente': '',
             'procedimento': 'Cirurgia'
         }
@@ -99,17 +109,19 @@ class AtualizaUmAgendamentoTest(TestCase):
     def setUp(self):
         self.joana = Agendamento.objects.create(
             paciente='Joana', procedimento='Cirurgia',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(), hora_fim=timezone.now().time())
         self.payload_valido = {
-            'data_inicio': '2018-01-09T09:00:00.000',
-            'data_fim': '2018-01-09T09:50:00.000',
+            'data': '2018-01-09',
+            'hora_inicio': '09:00:00.000',
+            'hora_fim': '09:50:00.000',
             'paciente': 'Joana',
             'procedimento': 'Cirurgia'
         }
 
         self.payload_invalido = {
-            'data_inicio': '2018-01-09T09:00:00.000',
-            'data_fim': '2018-01-09T09:50:00.000',
+            'data': '2018-01-09',
+            'hora_inicio': '09:00:00.000',
+            'hora_fim': '09:50:00.000',
             'paciente': '',
             'procedimento': 'Cirurgia'
         }
@@ -139,10 +151,12 @@ class DeletaUmAgendamentoTest(TestCase):
     def setUp(self):
         self.joana = Agendamento.objects.create(
             paciente='Joana', procedimento='Cirurgia',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
         self.maria = Agendamento.objects.create(
             paciente='Maria', procedimento='Atendimento',
-            data_inicio=timezone.now(), data_fim=timezone.now())
+            data=timezone.now().date(), hora_inicio=timezone.now().time(),
+            hora_fim=timezone.now().time())
 
     def teste_deleta_agendamento_valido(self):
         response = client.delete(

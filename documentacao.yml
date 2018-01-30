@@ -11,37 +11,42 @@ paths:
       description: ''
       parameters: 
         - in: query
-          name: page
-          description: 'Número da página da consulta'
-          schema:
-            type: number
-        - in: query
-          name: pagesize
-          description: 'Tamanho da página da consulta'
-          schema:
-            type: number
-        - in: query
-          name: page
-          description: 'Número da página da consulta'
-          schema:
-            type: number
-        - in: query
-          name: page
-          description: 'Número da página da consulta'
-          schema:
-            type: number
-        - in: query
-          name: sortId
+          name: search
+          description: 'Filtro global por string'
           schema:
             type: string
         - in: query
-          name: sortDirection
+          name: offset
+          description: 'Número de items pulados na paginação'
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: 'Número de resultados da consulta'
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          description: 'Ordenação dos resultados'
           schema:
             type: string
             enum: 
-            - ''
-            - 'asc'
-            - 'desc'
+            - 'data'
+            - 'hora_fim'
+            - 'hora_inicio'
+            - 'data_hora_fim'
+            - 'data_hora_inicio'
+            - 'id'
+            - 'paciente'
+            - 'procedimento'
+            - '-data'
+            - '-hora_fim'
+            - '-hora_inicio'
+            - '-data_hora_fim'
+            - '-data_hora_inicio'
+            - '-id'
+            - '-paciente'
+            - '-procedimento'
       responses:
         '200':
           description: 'Sucesso'
@@ -54,6 +59,25 @@ paths:
       responses:
         '201':
           description: 'Agendamento criado com sucesso'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    format: integer
+                  next:
+                    type: string
+                    format: url
+                  previous:
+                    type: string
+                    format: url
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/Atendimento'
         '400':
           description: 'Faltam parâmetros obrigatórios ou eles não estão no formato correto'
         '409':
@@ -137,34 +161,6 @@ components:
         procedimento:
           type: string
           example: 'Atendimento simples'
-    PagedResponse:
-      type: object
-      properties:
-        content:
-          type: array
-        pageable:
-          type: object
-        totalPages:
-          type: integer  
-        totalElements:
-          type: integer  
-        last:
-          type: boolean  
-        size:
-          type: integer  
-        number:
-          type: integer
-        sort:
-          type: object
-          properties:
-            unsorted:
-              type: boolean
-            sorted:
-              type: boolean
-        first:
-          type: boolean
-        numberOfElements:
-          type: integer
 servers:
   - description: 'default'
     url:  /api/
