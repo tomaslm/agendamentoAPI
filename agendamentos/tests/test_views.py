@@ -72,7 +72,7 @@ class BuscaUmAgendamentoTest(TestCase):
 
 class CriaAgendamentoTest(TestCase):
     def setUp(self):
-        self.joana2 = Agendamento.objects.create(
+        self.joana = Agendamento.objects.create(
             paciente='Joana', procedimento='Retorno',
             data=datetime.datetime(2018, 1, 1, 10, 30, 0,
                                    0, tzinfo=pytz.timezone('America/Sao_Paulo')).date(),
@@ -102,6 +102,20 @@ class CriaAgendamentoTest(TestCase):
             'paciente': 'Joana',
             'procedimento': 'Cirurgia'
         }
+        self.payload_valido_horario_proximo_1 = {
+            'data': '2018-01-01',
+            'hora_inicio': '10:00:00.000',
+            'hora_fim': '10:29:00.000',
+            'paciente': 'Joana',
+            'procedimento': 'Retorno 2'
+        }
+        self.payload_valido_horario_proximo_2 = {
+            'data': '2018-01-01',
+            'hora_inicio': '11:31:00.000',
+            'hora_fim': '12:00:00.000',
+            'paciente': 'Joana',
+            'procedimento': 'Retorno 3'
+        }
         self.payload_invalido_horario = {
             'data': '2018-01-01',
             'hora_inicio': '11:00:00.000',
@@ -127,6 +141,24 @@ class CriaAgendamentoTest(TestCase):
         )
 
         self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
+
+    def test_cria_agendamento_valido_horario_proximo_1(self):
+        response = client.post(
+            reverse('get_post_agendamentos'),
+            data=json.dumps(self.payload_valido_horario_proximo_1),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code,  status.HTTP_201_CREATED)
+
+    def test_cria_agendamento_valido_horario_proximo_2(self):
+        response = client.post(
+            reverse('get_post_agendamentos'),
+            data=json.dumps(self.payload_valido_horario_proximo_2),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code,  status.HTTP_201_CREATED)
 
     def test_cria_agendamento_invalido_horario(self):
         response = client.post(
