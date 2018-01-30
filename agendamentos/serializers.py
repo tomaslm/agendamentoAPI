@@ -9,8 +9,6 @@ class AgendamentoSerializer(serializers.ModelSerializer):
                   'paciente', 'procedimento')
 
     def validate_agendamento_com_mesmo_horario(self, data, pk):
-        print(data)
-        print(pk)
         agendamentos_com_mesmo_horario = Agendamento.objects.filter(
             paciente=data['paciente'],
             data=data['data'],

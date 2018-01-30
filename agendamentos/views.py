@@ -49,7 +49,6 @@ def get_post_agendamentos(request):
         sort = request.GET.get('sort')
         if sort:
             if sort == "data_hora_inicio":
-                print('here')
                 queryset = queryset.order_by('data', 'hora_inicio')
             elif sort == "-data_hora_inicio":
                 queryset = queryset.order_by('-data', '-hora_inicio')
