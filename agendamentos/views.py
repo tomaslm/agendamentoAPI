@@ -27,13 +27,11 @@ def get_delete_update_agendamento(request, pk):
             try:
                 serializer.validate_agendamento_com_mesmo_horario(
                     vars(agendamento), pk)
-            except serializers.ValidationError:
-                return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
+            except serializers.ValidationError as ex:
+                return Response(str(ex), status=status.HTTP_409_CONFLICT)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
 
 
 @api_view(['GET', 'POST'])
@@ -69,9 +67,8 @@ def get_post_agendamentos(request):
         if serializer.is_valid():
             try:
                 serializer.validate_agendamento_com_mesmo_horario(data, 0)
-            except serializers.ValidationError:
-                return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
+            except serializers.ValidationError as ex:
+                return Response(str(ex), status=status.HTTP_409_CONFLICT)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
